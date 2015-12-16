@@ -1,0 +1,12 @@
+<div id= "header"> 
+    Welcome, {{user_name}} to the create new document Wizard!! 
+</div>
+
+<form action="" method="post">
+{% csrf_token %}
+{{form.as_ul}}
+<input type="submit" value= "Next" />
+
+</form>
+
+

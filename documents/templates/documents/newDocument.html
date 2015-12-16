@@ -1,0 +1,8 @@
+<p> This page will allow you to create a new document based on the class {{document_class}} </p>
+
+<form action="/documents/{{doc_id}}/create/" method="post">
+    {% csrf_token %}
+    {{form.as_ul}}
+    <input type="submit" value="Δημιουργία"/>
+
+</form>
