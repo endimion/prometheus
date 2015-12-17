@@ -70,17 +70,6 @@ def login(request):
                 db_pass = user.user_password
                 if(db_pass == password):
                     print("Successfully logged in")
-                    # here we should redirect to the appropriate page to generate the forms
-                    # return redirect('documents.views.wizard', user=user) 
-                    # return  HttpResponseRedirect(reverse('documents.views.wizard'), args=(),kwargs={'user':user})
-                    #return redirect('documents.views.wizard',args=(user,))
-                    #return render(request,'documents.views.wizard',{'user':user})
-                    #serialized_user = serializers.serialize("json",[user,])
-                    #request.session['user']= serialized_user
-
-                    # the best way so far to do sessioncontrol for login stuff
-                    # is to store in the session the user_name, and user_id
-                    # after a user succesfully logs in 
                     request.session['user_name'] = user.user_name
                     request.session['user_id'] = user.id
 
