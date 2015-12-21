@@ -1,3 +1,5 @@
+from login import views
+
 """prometheus URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -22,4 +24,5 @@ urlpatterns = [
     url(r'^login/',include('login.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^documents/', include('documents.urls')),
+    url(r'^$',views.login, name='login' ),
 ]
