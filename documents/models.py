@@ -37,12 +37,12 @@ class Department(models.Model):
 
 class Document(models.Model):
     date_submited = models.DateTimeField('date submitted')
-    #department_addressed = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department_addressed = models.ForeignKey(Department, on_delete=models.CASCADE)
     document_class = models.ForeignKey(DocumentClass, on_delete=models.CASCADE)
     user_submitted = models.ForeignKey(User, on_delete=models.CASCADE)
     pdf_file = models.FileField(upload_to='pdfs')
 
 
     def __str__(self):
-        return self.user_submitted.user_name + "_"+ self.department_addressed.department_name
+        return self.user_submitted.user_name + "_" + str(self.id) + "_" 
 

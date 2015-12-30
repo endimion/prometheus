@@ -11,4 +11,7 @@ urlpatterns = [
     #example /documents/5/create
     url(r'^(?P<doc_id>[0-9]+)/create/$', views.create, name='create-document'),
 
+    #example /documents/download
+    url(r'^download/$', views.servePdf, name='servePdf')
+
 ]
