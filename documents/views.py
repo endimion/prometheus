@@ -9,6 +9,8 @@ from django.utils import timezone
 from users.models import User
 from django.core.files import File
 
+from django.views.decorators.csrf import csrf_exempt
+
 # Create your views here.
 
 
@@ -80,23 +82,18 @@ def create(request, doc_id):
             generated_pdf_path = createPdf(template_path, str(document_count), values_dic)
             out_put_path = template_path
 
-
             # having generated the pdf file we can now upload it to the dbs
-
             # document_class  there already is a variable which contains the document class
             user_submitted= get_object_or_404(User, id= request.session.get('user_id'))
             doc_class = get_object_or_404(DocumentClass, document_class_name=document_class)
-
+            # now we can create the actual document object and store it in the db
             doc = Document(date_submited=timezone.now(), document_class = doc_class,  user_submitted = user_submitted, pdf_file= generated_pdf_path, department_addressed = dep_addressed)
             doc.save()
-            djangoFile = doc.pdf_file
- 
-            # print(djangoFile.path)
+
             # we add the generated file path to the session
             request.session['file_id'] = doc.id
 
-        # return HttpResponse("so far so good")
-        return render(request,'documents/fileCreated.html',{'file':djangoFile, })  
+        return render(request,'documents/fileCreated.html')
 
 
 
@@ -107,15 +104,20 @@ this view is used to serve a pdf file for download to the user
 def servePdf(request):
     the_file = get_object_or_404(Document,id=request.session.get('file_id'))
 
-    #print(file_id)
     filename = the_file.pdf_file.name.split('/')[-1]
     response = HttpResponse(the_file.pdf_file, content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
     return response
-#    return HttpResponse("so far so good")
 
 
+"""
+this view is used for uploading a signed pdf from the user
+"""
+@csrf_exempt
+def getPdf(request):
+    #pass
+    return HttpResponse('Hello, from the server')
 
 
 
