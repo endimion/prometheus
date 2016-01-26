@@ -37,3 +37,8 @@ class newDocumentForm(forms.Form):
 
         self.fields['department'] = forms.ChoiceField(choices=CHOICES,label='Τμήμα')
 
+
+
+class UploadFileForm(forms.Form):
+    #title = forms.CharField(max_length=50)
+    file = forms.FileField()

@@ -1,2 +1,9 @@
-<p> Creation of file completed! </p>
+{% load staticfiles %}
+
+<p> Το αρχείο δημιουργήθηκε επιτυχώς, με αριθμό πρωτοκόλλου {{doc_id}}</p>
 <p> Click the <a href="/documents/download"> link </a> to view the generated file </a>
+<div id="applet">
+    <applet archive="{% static 'documents/signApplet.jar' %}" code="appletTest.myApplet" width="300" height="400">
+        <param name="doc_id" value="{{doc_id}}">
+    </applet>
+</div>

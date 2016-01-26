@@ -9,7 +9,11 @@ from django.utils import timezone
 from users.models import User
 from django.core.files import File
 
+# these imports are required for creating the view that handles
+# the post request to upload files to the sever
 from django.views.decorators.csrf import csrf_exempt
+from .forms import UploadFileForm
+
 
 # Create your views here.
 
@@ -93,7 +97,7 @@ def create(request, doc_id):
             # we add the generated file path to the session
             request.session['file_id'] = doc.id
 
-        return render(request,'documents/fileCreated.html')
+        return render(request,'documents/fileCreated.html', {'doc_id': doc.id})
 
 
 
@@ -111,16 +115,50 @@ def servePdf(request):
     return response
 
 
+
 """
 this view is used for uploading a signed pdf from the user
 """
 @csrf_exempt
 def getPdf(request):
-    #pass
+
+    #print(request.session.get('file_id'))
+    # we will try to iterate through the file objects
+    # from the request now
+    if request.method == 'POST':
+         #form = UploadFileForm(request.POST, request.FILES)
+         # we get each file from the POST and handle it accordingly
+         for key in request.FILES.keys():
+             #print(key)
+             file = request.FILES[key]
+             #print(file.name)
+
+             # received_file = handle_file(file, file.name)
+             # print("the name of the file after copying it " + received_file.path)
+
+             doc_id = request.POST.get('doc_id')
+             print("the id of the document received is :" + doc_id)
+             # TODO here we should verify the signature of the document agains
+             # the public signature of the user who sent it and the user who generated the document
+ 
+             original_db_document = get_object_or_404(Document,id=doc_id)
+             original_db_document.pdf_file = file
+             original_db_document.save()
+
+
     return HttpResponse('Hello, from the server')
 
 
 
+"""
+this method simply stores the given file to the drive
+"""
+def handle_file(file, file_name):
+    destination = open('pdfs/'+file_name,'wb+')
+    for chunk in file.chunks():
+        destination.write(chunk)
+    destination.close()
+    return destination
 
 
 
